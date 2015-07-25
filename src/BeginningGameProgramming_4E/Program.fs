@@ -9,11 +9,14 @@ let dxb v = SharpDX.Bool(v)
 
 let createD3DObjects () = 
     let form = new RenderForm("SharpDX Test")
-    form.TopMost <- true
+    //form.TopMost <- true
     form.FormBorderStyle <- System.Windows.Forms.FormBorderStyle.None
 
     let d3d = new Direct3D9.Direct3D()
-    let d3dpp = new PresentParameters(form.Width, form.Height, Windowed = Bool true, SwapEffect = SwapEffect.Discard, BackBufferCount = 1, BackBufferFormat = Format.X8R8G8B8, DeviceWindowHandle = form.Handle)
+    let dm = d3d.GetAdapterDisplayMode(0)
+    form.Width <- dm.Width
+    form.Height <- dm.Height
+    let d3dpp = new PresentParameters(form.Width, form.Height, Windowed = Bool true, SwapEffect = SwapEffect.Discard, BackBufferCount = 1, BackBufferFormat = dm.Format, DeviceWindowHandle = form.Handle)
     let d3ddev = new Device(d3d, 0, DeviceType.Hardware, form.Handle, CreateFlags.HardwareVertexProcessing, d3dpp)
 
     (form, d3d, d3ddev)
