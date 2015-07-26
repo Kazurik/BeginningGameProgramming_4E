@@ -38,14 +38,16 @@ let main argv =
     
     let backbuffer = d3ddev.GetBackBuffer(0, 0)
     let rect = new Nullable<Rectangle>(new Rectangle(100, 90, 100, 90))
-    let surface = Surface.CreateOffscreenPlain(d3ddev, 100, 100, Format.X8R8G8B8, Pool.Default)
+    let mutable surface = Surface.CreateOffscreenPlain(d3ddev, form.Width, form.Height, Format.X8R8G8B8, Pool.Default)
+    if not (System.IO.File.Exists("Resources\photo.png")) then 
+        failwith "Photo.png is missing! Download it from http://jharbour.com/wordpress/portfolio/beginning-game-programming-4th-edition/"
+        exit 1
+    Surface.FromFile(surface, "Resources\photo.png", Filter.Default, 0)
 
-    let rand = new System.Random()
     let cornflowerBlue = ColorBGRA.FromRgba(Color.CornflowerBlue.ToRgba())
     RenderLoop.Run(form, (fun () -> d3ddev.Clear(ClearFlags.Target ||| ClearFlags.ZBuffer, cornflowerBlue, float32 1, 0)
                                     d3ddev.BeginScene()
-                                    d3ddev.ColorFill(surface, ColorsH.RandomColor)
-                                    d3ddev.StretchRectangle(surface, Nullable(), backbuffer, rect, TextureFilter.None)
+                                    d3ddev.StretchRectangle(surface, Nullable(), backbuffer, Nullable(), TextureFilter.None)
                                     d3ddev.EndScene()
                                     d3ddev.Present()))
     0 // return an integer exit code

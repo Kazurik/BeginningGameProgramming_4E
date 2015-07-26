@@ -68,6 +68,7 @@
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
+    <None Include="Resources\photo.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
